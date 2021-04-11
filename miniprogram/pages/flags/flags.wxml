@@ -1,0 +1,68 @@
+<!--pages/flags/flags.wxml-->
+<view class="top-tap">
+  <view class="date" bindtap="showCalendar">
+    <image src="../../images/calendar.png"></image>
+    <text>03-02</text>
+    <image src="../../images/down.png" class="icon-down"></image>
+  </view>
+</view>
+
+<view class="flags">
+  <view wx:for="{{flagList}}" wx:key="item">
+    <view class="{{item.done ? 'flag-2' : 'flag-1'}}">
+      <image class="logo" src="../../images/{{item.type}}.png"></image>
+      <view class="text">
+        <text class="title">{{item.name}}</text>
+        <text class="times">每日一次</text>
+      </view>
+      <view class="done" bindtap="doneFlag" data-id="{{item._id}}" data-done="{{item.done}}">
+        <image class="done-icon" src="{{item.done ? '../../images/Heart.png' : '../../images/addHeart.png'}}"></image>
+        <text class="done-text">{{item.done ? '已完成flag' : '去完成flag'}}</text>
+      </view>
+    </view>
+  </view>
+  <!-- <view class="flag-2">
+    <image class="logo" src="../../images/study.png"></image>
+    <view class="text">
+      <text class="title">站立一会</text>
+      <text class="times">每日一次</text>
+    </view>
+    <view class="done" bindtap="doneFlag">
+      <image class="done-icon" src="{{done}}"></image>
+      <text class="done-text">已完成flag</text>
+    </view>
+  </view> -->
+</view>
+
+
+<view class="add-flag" bindtap="addFlag">
+  <image src="../../images/add1.png"></image>
+</view>
+
+<view wx:if="{{showDone}}" class="show-done-card">
+  <view class="show-done">
+    <view class="title-view">
+      <image src="../../images/{{currentList.type}}.png"></image>
+      <text>{{currentList.name}}</text>
+      <text class="detail" bindtap="showDetail" data-id="currentList._id">详情 > </text>
+    </view>
+    <image class="finish-icon" src="../../images/finish.png"></image>
+    <text class="finish-title">Flag成功</text>
+    <text class="finish-times">已累计完成{{currentList.times}}次</text>
+    <view class="finish-close" bindtap="closeDone">关闭</view>
+  </view>
+</view>
+
+<view wx:if="{{showDetail}}" class="show-done-card">
+  <view class="show-done">
+    <view class="title-view">
+      <image src="../../images/{{currentList.type}}.png"></image>
+      <text>{{currentList.name}}</text>
+      <text class="detail" bindtap="showDetail" data-id="{{currentList._id}}">详情 > </text>
+    </view>
+    <image class="finish-icon" src="../../images/finish.png"></image>
+    <text class="finish-title">已经打卡Flag</text>
+    <text class="finish-times">已累计完成{{currentList.times}}次</text>
+    <view class="finish-close" bindtap="closeDone" data-type="detail">关闭</view>
+  </view>
+</view>

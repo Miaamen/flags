@@ -1,0 +1,24 @@
+<!--pages/detail/detail.wxml-->
+<view class="all">
+  <image class="icon" src="../../images/{{currentList.type}}.png"></image>
+  <text class="main-title">{{currentList.name}}</text>
+  <view class="detail-data">
+    <view class="ec-chart">
+      <ec-canvas force-use-old-canvas="true" class="ec" ec="{{ ec }}"></ec-canvas>
+    </view>
+    <view class="ec-text">
+      <view class="text">
+        <text class="text-title">日期</text>
+        <text class="text-detail">{{currentList.startDate}} ~ {{currentList.deadline}}</text>
+      </view>
+      <view class="text">
+        <text class="text-title">打卡周期</text>
+        <text class="text-detail">每日 · 每日一次</text>
+      </view>
+    </view>
+  </view>
+  <view class="detail-chart">
+    <text class="add-text">累计坚持（天）</text>
+    <text class="add-days">{{currentList.times}}</text>
+  </view>
+</view>

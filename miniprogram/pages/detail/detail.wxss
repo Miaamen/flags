@@ -1,0 +1,87 @@
+/* pages/detail/detail.wxss */
+.all {
+  background: #fcfbfd;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.icon {
+  margin-top: 20px;
+  margin-bottom: 10px;
+  width: 10vh;
+  height: 10vh;
+}
+
+.detail-data, .detail-chart {
+  width: calc(100% - 56px);
+  margin:10px 13px 0 13px;
+  background: #fff;
+  box-shadow: 0px 0px 5px #ccc;
+  border-radius: 6px;
+  display: flex;
+}
+
+.detail-data {
+  justify-content: space-between;
+}
+
+.detail-data .text {
+  display: flex;
+  flex-direction: column;
+}
+
+.text-title {
+  color: #8c8c8c;
+  font-size: 0.8em;
+  margin-top: 5px;
+}
+
+.text-detail {
+  color: #565656;
+  font-size: 0.9em;
+  margin-top: 5px;
+}
+
+.detail-chart {
+  flex-direction: column;
+  text-align: center;
+}
+
+.main-title {
+  margin-bottom: 10px;
+  color: #797979;
+}
+
+.ec-chart {
+  width: 20vh;
+  height: 20vh;
+}
+
+.ec-text {
+  width: calc(100% - 56px - 20vh);
+  padding: 20px 25px 20px 15px;
+}
+
+.detail-chart {
+  display: flex;
+  justify-content: center;
+}
+
+.ec-chart1 {
+  width: 100vw;
+  height: 100vh;
+}
+
+.add-text {
+  margin: 15px 0 5px 0;
+  font-size: 1em;
+  color: #797979;
+}
+
+.add-days {
+  font-size: 2.2em;
+  color: #cfb5e2;
+}

@@ -1,0 +1,99 @@
+<text class="title">立个Flag~</text>
+<view class="form">
+  <view class="flag-name">
+    <view class="name-title">
+      <view class="icon"></view>
+      <text>你的Flag名是什么？</text>
+    </view>
+    <text class="subtitle">起个响亮的名字吧~</text>
+    <input placeholder="最多支持20个字符哦" placeholder-class="placeholder-class" value="{{title}}" bindinput="changeValue"></input>
+  </view>
+
+  <!-- <view class="flag-punishment">
+    <view class="name-title">
+      <view class="icon"></view>
+      <text>Flag描述</text>
+    </view>
+    <text class="subtitle">描述一下这个Flag吧~</text>
+    <textarea placeholder="最多支持200个字符哦" placeholder-class="placeholder-class"></textarea>
+  </view> -->
+
+  <view class="flag-type">
+    <view class="name-title">
+      <view class="icon"></view>
+      <text>Flag类型</text>
+    </view>
+    <view class="types">
+      <view class="type {{viewId == 0 ? 'selected' : ''}}" bindtap="selectType" data-type="study" data-index="0">
+        <image src="../../images/study.png"></image>
+        <text>学习</text>
+      </view>
+      <view class="type {{viewId == 1 ? 'selected' : ''}}" bindtap="selectType" data-type="sports" data-index="1">
+        <image src="../../images/sports.png"></image>
+        <text>运动</text>
+      </view>
+      <view class="type {{viewId == 2 ? 'selected' : ''}}" bindtap="selectType" data-type="health" data-index="2">
+        <image src="../../images/health.png"></image>
+        <text>健康</text>
+      </view>
+      <view class="type {{viewId == 3 ? 'selected' : ''}}" bindtap="selectType" data-type="meat" data-index="3">
+        <image src="../../images/meat.png"></image>
+        <text>饮食</text>
+      </view>
+      <view class="type {{viewId == 4 ? 'selected' : ''}}" bindtap="selectType" data-type="sleeping" data-index="4">
+        <image src="../../images/sleeping.png"></image>
+        <text>睡眠</text>
+      </view>
+    </view>
+  </view>
+
+  <view class="flag-deadline">
+    <view class="name-title">
+      <view class="icon"></view>
+      <text>设置deadline</text>
+    </view>
+    <text class="subtitle">默认每日打卡一次哦~</text>
+    <view class="pick-date">
+      <picker mode="date" value="{{nowDateString}}" bindchange="bindDateChange">
+        <view class="picker">
+          {{date}}
+        </view>
+        <text>点击设置deadline</text>
+      </picker>
+    </view>
+  </view>
+
+  <!-- <view class="flag-punishment">
+    <view class="name-title">
+      <view class="icon"></view>
+      <text>设置惩罚</text>
+    </view>
+    <text class="subtitle">没完成所以有惩罚~</text>
+    <textarea placeholder="最多支持200个字符哦" placeholder-class="placeholder-class"></textarea>
+  </view> -->
+
+  <!-- <view class="flag-permise">
+    <view class="name-title">
+      <view class="icon"></view>
+      <text>是否下注</text>
+    </view>
+    <text class="subtitle">下注后好友们会看见哦</text>
+    <radio-group>
+      <radio color="#be8dbd">是</radio>
+      <radio color="#be8dbd">否</radio>
+    </radio-group>
+  </view>
+
+  <view class="flag-permise">
+    <view class="name-title">
+      <view class="icon"></view>
+      <text>Flag谁可见</text>
+    </view>
+    <radio-group>
+      <radio color="#be8dbd">仅自己</radio>
+      <radio color="#be8dbd">大家都可</radio>
+    </radio-group>
+  </view> -->
+
+  <view class="btn" bindtap="addFlag">DONE</view>
+</view>

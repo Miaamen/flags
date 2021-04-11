@@ -1,0 +1,4 @@
+<view class="customize">
+  <image src=""></image>
+  <text>自定义flag</text>
+</view>

@@ -1,0 +1,74 @@
+/* pages/flag/flag.wxss */
+.add-flag {
+  width: 100%;
+  height: 8vh;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #fff;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  box-shadow: 0 5px 5px #ccc;
+}
+
+.add-flag text {
+  padding-left: 15px;
+}
+
+.add-flag image {
+  width: 7vh;
+  height: 7vh;
+  padding-right: 5px;
+}
+
+.flag-container {
+  width: 100%;
+  height: calc(100% - 8vh);
+}
+
+.flags {
+  width: calc(100% - 20px);
+  box-sizing: border-box;
+  background: #fff;
+  border-radius: 4px;
+  margin: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  box-shadow: 0px 0px 5px #ccc;
+}
+
+.flags::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px;
+  height: 100%;
+  background: #be8dbd;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
+.flag {
+  width: calc(100% - 100px);
+  padding: 10px 0;
+  display: flex;
+  flex-direction: column;
+  margin-left: 25px;
+  position: relative;
+}
+
+.flags image{
+  width: 40px;
+  height: 40px;
+  margin-right: 15px;
+  border-radius: 5px;
+}
+
+
+.flag progress {
+  margin-top: 15px;
+}
+
