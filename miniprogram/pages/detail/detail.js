@@ -43,7 +43,7 @@ var option = {
 };
 var chart;
 function initChart(canvas, width, height) {
-  console.log(width, height, canvas)
+  console.log('herehere', width, height, canvas)
   chart = echarts.init(canvas, null, {
     width: width,
     height: height
@@ -74,22 +74,49 @@ Page({
     })
     const eventChannel = this.getOpenerEventChannel()
     let id = ''
-    eventChannel.on('acceptDataFromOpenerPage', function (data) {
-      id = data.datasetId
-    })
-
-    const flags = wx.cloud.database().collection('flags');
     const _this = this;
-    flags.doc(id).get({
-      success: function (res) {
-        _this.setData({
-          currentList: res.data
-        })
-        wx.hideLoading()
-      }
+    let temp = {};
+    new Promise((resolve, reject) => {
+      eventChannel.on('acceptDataFromOpenerPage', function (data) {
+        id = data.datasetId
+      })
+      resolve();
+    }).then(() => {
+      console.log('ididid', id);
+      const flags = wx.cloud.database().collection('flags');
+      new Promise((resolve, reject) => {
+        flags.doc(id).get({
+          success: function (res) {
+            _this.setData({
+              currentList: res.data
+            })
+            temp = res.data
+            console.log('hhhhhhhhhhhhhhhhh', res.data)
+            wx.hideLoading();
+            resolve();
+          }
+        });
+      }).then(() => {
+        const allDay = _this.differDay('2021-03-22', '2021-05-01');
+        doneValue = Number(temp.times) / Number(allDay) * 100;
+        console.log('alll',typeof(temp.times), typeof(allDay), doneValue);
+        let option = {
+          title: {
+            text: doneValue + '%',//主标题文本
+          },
+          series: [
+            {
+              data: [
+                { value: doneValue, name: '已经打卡' },
+                { value: 100, name: '没有打卡' }
+              ]
+            }
+          ]
+        };
+        chart.setOption(option);
+      })
     });
   },
-
 
   /**
    * 生命周期函数--监听页面初次渲染完成
@@ -138,5 +165,15 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+  /**
+   * 日期相差
+   */
+  differDay: function (dayA, dayB) {
+    var day1 = new Date(dayA);
+    var day2 = new Date(dayB);
+    var differDay = Math.abs(day1 - day2) / 1000 / 60 / 60 / 24;
+    console.log('DDDDDDDD', differDay);
+    return differDay;
   }
 })
