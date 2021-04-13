@@ -84,4 +84,43 @@
 .add-days {
   font-size: 2.2em;
   color: #cfb5e2;
+  padding: 10px;
+  margin: 0 10px;
+  border-bottom: 1px dashed #cfb5e2;
+}
+
+.container {
+  padding-top: 10px;
+  display: flex;
+  align-items: flex-end;
+  flex-direction: row;
+  width: calc(100% - 20px);
+  margin: auto;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.monthCell {
+  width: 1vw;
+  display: flex;
+  align-content: flex-end;
+  flex-direction: column;
+}
+
+.dayCell {
+  width: 1vw;
+  height: 1.2vw;
+  margin-top: 2px;
+  background: #e5d7f0;
+}
+
+.month {
+  margin-top: 3px;
+  color: #797979;
+  font-size: 9px;
+}
+
+.year {
+  color: #797979;
+  padding-top: 10px;
 }

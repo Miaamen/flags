@@ -52,6 +52,11 @@ function initChart(canvas, width, height) {
   chart.setOption(option);
   return chart;
 }
+
+let arr31 = Array(31).fill(1);
+let arr30 = Array(30).fill(1);
+let arr28 = Array(28).fill(1);
+
 // pages/detail/detail.js
 Page({
 
@@ -62,7 +67,8 @@ Page({
     currentList: {},
     ec: {
       onInit: initChart
-    }
+    },
+    cellList: [arr31, arr28, arr31, arr30, arr31, arr30, arr31, arr31, arr30, arr31, arr30, arr31]
   },
 
   /**
@@ -175,5 +181,6 @@ Page({
     var differDay = Math.abs(day1 - day2) / 1000 / 60 / 60 / 24;
     console.log('DDDDDDDD', differDay);
     return differDay;
-  }
+  },
+
 })
