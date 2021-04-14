@@ -8,7 +8,8 @@ Page({
     flagList: [],
     showDone: false,
     showDetail: false,
-    currentList: {}
+    currentList: {},
+    showCalen: false
   },
 
   /**
@@ -84,6 +85,9 @@ Page({
    */
   showCalendar: function ()  {
     console.log('showCalendar');
+    this.setData({
+      showCalen: true
+    })
   },
 
   addFlag: function () {

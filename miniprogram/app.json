@@ -1,10 +1,12 @@
 {
   "pages": [
+    "pages/note/note",
     "pages/flags/flags",
+    
+    
     "pages/detail/detail",
     "pages/addFlag/addFlag",
     "pages/create/create",
-    "pages/flag/flag",
     "pages/index/index",
     "pages/userConsole/userConsole",
     "pages/storageConsole/storageConsole",
@@ -40,9 +42,15 @@
         "text": "Flag"
       },
       {
+        "selectedIconPath": "images/noteselect.png",
+        "iconPath": "images/note.png",
+        "pagePath": "pages/note/note",
+        "text": "记录"
+      },
+      {
         "selectedIconPath": "images/myselect.png",
         "iconPath": "images/my.png",
-        "pagePath": "pages/flag/flag",
+        "pagePath": "pages/note/note",
         "text": "我的"
       }
     ]

@@ -66,3 +66,12 @@
     <view class="finish-close" bindtap="closeDone" data-type="detail">关闭</view>
   </view>
 </view>
+
+<!-- <view class="calendar">
+  <view class="calendar-header">
+		<view id="prev"><</view>
+<text><view id="months">JAN</view><view id="years"> 2020</view></text>
+	<view id="next">></view>
+</view>
+<view id="calendar-content"></view>
+</view> -->

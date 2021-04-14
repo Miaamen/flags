@@ -1,0 +1,40 @@
+<!--pages/note/note.wxml-->
+<view class="all-container">
+  <text class="title">今日flags</text>
+  <view class="date">
+    <view class="day">
+      <text class="week">日</text>
+      <text class="day-number">11</text>
+    </view>
+    <view class="day today">
+      <text class="week">一</text>
+      <text class="day-number">11</text>
+    </view>
+    <view class="day">
+      <text class="week">二</text>
+      <text class="day-number">11</text>
+    </view>
+    <view class="day">
+      <text class="week">三</text>
+      <text class="day-number">11</text>
+    </view>
+    <view class="day">
+      <text class="week">四</text>
+      <text class="day-number">11</text>
+    </view>
+    <view class="day">
+      <text class="week">五</text>
+      <text class="day-number">11</text>
+    </view>
+    <view class="day">
+      <text class="week">六</text>
+      <text class="day-number">11</text>
+    </view>
+  </view>
+
+  <view class="today-detail">
+    <view class="chart">
+      <ec-canvas force-use-old-canvas="true" class="ec" ec="{{ ec }}"></ec-canvas>
+    </view>
+  </view>
+</view>

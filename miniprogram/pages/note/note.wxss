@@ -1,0 +1,53 @@
+/* pages/note/note.wxss */
+.all-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background: #fcfbfd;
+}
+
+.title {
+  font-weight: 500;
+  color: #797979;
+  font-size: 1.2em;
+  margin-left: 15px;
+}
+
+.date {
+  height: calc(2em + 40px);
+  margin-top: 10px;
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.day {
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.today {
+  background: #cfb5e261;
+  border-radius: 10px;
+  height: calc(2em + 10px);
+}
+
+.today-detail {
+  width: 100%;
+  position: absolute;
+  top: calc(3.2em + 60px);
+  bottom: 0;
+  background: #fff;
+  box-shadow: 0 0 5px #cfb5e261;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.chart {
+  padding-top: 15px;
+  width: 94vw;
+  height: 170px;
+  margin: 0 auto; 
+}
