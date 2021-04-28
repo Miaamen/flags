@@ -1,0 +1,62 @@
+/* pages/my/my.wxss */
+.all-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+  background: #fcfbfd;
+}
+
+.chart, .question {
+  background: #fff;
+  width: 90vw;
+  margin: 15px auto;
+  box-shadow: 0 0 5px #ccc;
+  border-radius: 20px;
+}
+
+.chart {
+  padding-top: 15px;
+  height: 170px;
+}
+
+.question {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.question-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: 15px;
+}
+
+.question-title image {
+  width: 15px;
+  height: 15px;
+}
+
+.question-title text {
+  color: #8f8f8f;
+  font-size: 12px;
+}
+
+.question-area {
+  margin-top: 10px;
+  padding: 10px;
+  width: 70vw;
+  height: 30px;
+  border: 1px solid #ccc;
+  box-shadow: 0 0 3px #ccc;
+  border-radius: 10px;
+  font-size: 12px;
+}
+
+.question-btn {
+  font-size: 12px;
+  background: #cfb5e2;
+  color: #fff;
+  margin: 10px 0 15px 0;
+}

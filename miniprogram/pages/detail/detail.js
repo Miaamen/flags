@@ -8,7 +8,7 @@ var option = {
     left: 'center',
     top: 'center',
     textStyle: {
-      fontSize: 20,
+      fontSize: 16,
       color: '#454c5c',
       align: 'center'
     }
@@ -57,6 +57,9 @@ let arr31 = Array(31).fill(1);
 let arr30 = Array(30).fill(1);
 let arr28 = Array(28).fill(1);
 
+var date = new Date();
+var curYear = date.getFullYear();
+
 // pages/detail/detail.js
 Page({
 
@@ -68,7 +71,14 @@ Page({
     ec: {
       onInit: initChart
     },
-    cellList: [arr31, arr28, arr31, arr30, arr31, arr30, arr31, arr31, arr30, arr31, arr30, arr31]
+    cellList: [arr31, arr28, arr31, arr30, arr31, arr30, arr31, arr31, arr30, arr31, arr30, arr31],
+    year: curYear
+  },
+
+  watch: {
+    cellList() {
+      console.log('cellList change')
+    }
   },
 
   /**
@@ -96,16 +106,16 @@ Page({
             _this.setData({
               currentList: res.data
             })
-            temp = res.data
-            console.log('hhhhhhhhhhhhhhhhh', res.data)
-            wx.hideLoading();
+            temp = res.data;
             resolve();
           }
         });
       }).then(() => {
-        const allDay = _this.differDay('2021-03-22', '2021-05-01');
-        doneValue = Number(temp.times) / Number(allDay) * 100;
-        console.log('alll',typeof(temp.times), typeof(allDay), doneValue);
+        console.log('uuquququ:', this.data.currentList, this.data.currentList.type)
+        this.dateCell(this.data.currentList.flagTime);
+        const allDay = _this.differDay(this.data.currentList.startDate, this.data.currentList.deadline);
+        doneValue = (Number(temp.times) / Number(allDay) * 100).toFixed(2);
+        console.log('alll',temp.times, allDay, doneValue);
         let option = {
           title: {
             text: doneValue + '%',//主标题文本
@@ -120,6 +130,7 @@ Page({
           ]
         };
         chart.setOption(option);
+        wx.hideLoading();
       })
     });
   },
@@ -175,11 +186,34 @@ Page({
    * 日期相差
    */
   differDay: function (dayA, dayB) {
-    var day1 = new Date(dayA);
-    var day2 = new Date(dayB);
+    const temp1 = (dayA + '').substring(0, 4) + '-' + (dayA + '').substring(4, 6) + '-' + (dayA + '').substring(6); 
+    const temp2 = (dayB + '').substring(0, 4) + '-' + (dayB + '').substring(4, 6) + '-' + (dayB + '').substring(6); 
+    var day1 = new Date(temp1);
+    var day2 = new Date(temp2);
     var differDay = Math.abs(day1 - day2) / 1000 / 60 / 60 / 24;
     console.log('DDDDDDDD', differDay);
     return differDay;
   },
+
+  /**
+   * 日期打卡可视化
+   */
+  dateCell: function(list) {
+    console.log('dateCell::', list);
+    let tempArr = this.data.cellList;
+    list.forEach(item => {
+      if(item.date.substring(0, 4) == curYear) {
+        const month = Number(item.date.substring(5, 7));
+        const day = Number(item.date.substring(8));
+        console.log('monthandday', month, day);
+        tempArr[month - 1][day - 1] = 2;
+        this.setData({
+          cellList: tempArr
+        })
+        
+        console.log('this.sash:', this.data.cellList);
+      }
+    })
+  }
 
 })

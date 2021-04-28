@@ -1,72 +1,21 @@
-import * as echarts from "../../ec-canvas/echarts";
+var db_util = require('../../utils/util.js');
 
-var option = {
-  title: {
-    text: '今日flag完成情况',
-    left: 'center',
-    textStyle: {
-      //文字颜色
-      color: '#8f8f8f',
-      //字体风格,'normal','italic','oblique'
-      fontStyle: 'normal',
-      //字体系列
-      fontFamily: 'sans-serif',
-      //字体大小
-      fontSize: 12
-    }
-  },
-  xAxis: {
-    type: 'category',
-    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
-    axisLine: {
-      lineStyle: {
-        // 设置x轴颜色
-        color: '#8f8f8f'
-      }
-    },
-  },
-  yAxis: {
-    type: 'value',
-    min: 0, // 设置y轴刻度的最小值
-    max: 1,  // 设置y轴刻度的最大值
-    splitNumber: 2,  // 设置y轴刻度间隔个数
-    axisLine: {
-      lineStyle: {
-        // 设置y轴颜色
-        color: '#8f8f8f'
-      }
-    },
-  },
-  series: [{
-    data: [0, 0.2, 1, 1, 0.5, 1, 0],
-    type: 'line',
-    itemStyle: {
-      normal: {
-        // 拐点上显示数值
-        label: {
-          show: true
-        },
-        borderColor: '#cfb5e2',  // 拐点边框颜色
-        lineStyle: {
-          // 使用rgba设置折线透明度为0，可以视觉上隐藏折线
-          color: '#cfb5e2'
-        }
-      }
-    },
-    color: ['#cfb5e2']
-  }]
-};
-var chart;
-function initChart(canvas, width, height) {
-  console.log('herehere', width, height, canvas)
-  chart = echarts.init(canvas, null, {
-    width: width,
-    height: height
-  });
-  canvas.setChart(chart);
-  chart.setOption(option);
-  return chart;
-}
+var date = new Date();
+var curYear = date.getFullYear();
+var curMonth = date.getMonth();
+var curDay = date.getDate();
+
+var todayY = curYear;
+var todayM = curMonth;
+
+var mm = [1, 2, 3, 4 ,5, 6, 7, 8, 9, 10, 11, 12];
+
+var firstDayOfMonth = new Date(curYear, curMonth, 1);
+var lastDayOfMonth = new Date(curYear, curMonth + 1, 0);
+var blank = firstDayOfMonth.getDay();
+
+const db = wx.cloud.database();
+const _ = db.command;
 
 // pages/note/note.js
 Page({
@@ -75,16 +24,41 @@ Page({
    * 页面的初始数据
    */
   data: {
-    ec: {
-      onInit: initChart
-    }
+    list: [],
+    month: todayY,
+    year: todayM,
+    day: 1,
+    week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+    date: [],
+    choosed: null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    const _this = this;
+    this.setData({
+      month: mm[curMonth],
+      year: curYear,
+      day: curDay
+    })
+    this.showDate(curYear, curMonth);
 
+    const todayDate = db_util.getTimeString(curYear, mm[curMonth], curDay);
+    
+    db.collection('flags').where({
+      flagTime: _.elemMatch({
+        date: todayDate
+      })
+    }).get({
+      success: function (res) {
+        _this.setData({
+          list: res.data
+        })
+      }
+    });
+    
   },
 
   /**
@@ -134,5 +108,130 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  /**
+   * 显示年月
+   */
+  showDate: function (year, month) {
+    console.log('showDataSHOWDATA');
+    curYear = year;
+    curMonth = month;
+  
+    let firstDayOfMonth = new Date(curYear, curMonth, 1);
+    let lastDayOfMonth = new Date(curYear, curMonth + 1, 0);
+    let blank = firstDayOfMonth.getDay();
+
+    let i = 0;
+    
+    let d = new Date().getDate();
+    let curr = 0;
+
+    if (month === 0 || month === 2 || month === 4 || month === 6 || month === 7 || month === 9 || month === 11) {
+      i = 31;
+    } else if (month === 3 || month === 5 || month === 8 || month === 10) {
+      i = 30;
+    } else if ((year % 400 === 0) || (year % 100 !== 0 && year % 4 === 0)) {
+      i = 29;
+    } else {
+      i = 28;
+    }
+  
+    let blanks = [];
+    let days = [];
+    for (let j = 0; j < blank; j++) {
+      blanks.push(' ');
+    }
+
+    for (let j = 1; j <= i; j++) {
+      days.push(j);
+      if (j === d && curMonth == todayM && curYear == todayY) {
+        curr = j;
+        this.setData({
+          currDay: j
+        })
+      }
+    }
+    this.setData({
+      date: blanks.concat(days),
+    })
+
+    // const todayDate = db_util.getTimeString(year, month, curDay);
+    // console.log('tttttt:', todayDate);
+    // const _this = this;
+    // db.collection('flags').where({
+    //   flagTime: _.elemMatch({
+    //     date: todayDate
+    //   })
+    // }).get({
+    //   success: function (res) {
+    //     console.log('sususuus', res.data);
+    //     _this.setData({
+    //       list: res.data
+    //     })
+    //   }
+    // });
+  },
+
+  prev: function () {
+    console.log('prevprev', curMonth);
+    //如果当前月份是1月份的话，上一个月就是去年的最后一个月
+    if (curMonth === 0) {
+      let tempY = this.data.year;
+      this.setData({
+        year: tempY - 1,
+        month: 12
+      });
+      this.showDate(curYear - 1, 11);
+    } else {
+      this.setData({
+        month: mm[curMonth - 1]
+      });
+      this.showDate(curYear, curMonth - 1);
+    }
+  },
+
+  next: function () {
+    //如果当前月份是12月份的话，下一个月就是明年的第一个月
+    if (curMonth === 11) {
+      let tempY = this.data.year;
+      this.setData({
+        year: tempY + 1,
+        month: 1
+      });
+      this.showDate(curYear + 1, 0);
+    } else {
+      this.setData({
+        month: mm[curMonth + 1]
+      });
+      this.showDate(curYear, curMonth + 1);
+    }
+  },
+
+  /**
+   * 跳转到某天
+   */
+  chooseDate: function(e) {
+    console.log('choose:', e.currentTarget.dataset.day, curYear, mm[curMonth]);
+    const day = e.currentTarget.dataset.day;
+    this.setData({
+      choosed: day
+    })
+    const todayDate = db_util.getTimeString(curYear, mm[curMonth], day);
+    const _this = this;
+    db.collection('flags').where({
+      flagTime: _.elemMatch({
+        date: todayDate
+      })
+    }).get({
+      success: function (res) {
+        _this.setData({
+          list: res.data,
+          year: curYear,
+          month: mm[curMonth],
+          day: day
+        })
+      }
+    });
   }
 })

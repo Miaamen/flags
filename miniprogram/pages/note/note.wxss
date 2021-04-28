@@ -1,9 +1,11 @@
 /* pages/note/note.wxss */
 .all-container {
   width: 100vw;
-  height: 100vh;
   position: relative;
   background: #fcfbfd;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
 }
 
 .title {
@@ -15,7 +17,7 @@
 
 .date {
   height: calc(2em + 40px);
-  margin-top: 10px;
+  margin: 3px auto;
   width: 100%;
   display: flex;
   flex-direction: row;
@@ -36,18 +38,163 @@
 
 .today-detail {
   width: 100%;
-  position: absolute;
-  top: calc(3.2em + 60px);
-  bottom: 0;
+  height: 70vh;
+  margin-top: 20px;
   background: #fff;
   box-shadow: 0 0 5px #cfb5e261;
   border-top-left-radius: 20px;
   border-top-right-radius: 20px;
+  padding-top: 20px;
 }
 
-.chart {
-  padding-top: 15px;
-  width: 94vw;
-  height: 170px;
-  margin: 0 auto; 
+.flag, .timelist-title {
+  width: 80vw;
+  height: 30px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+}
+
+.timelist-title {
+  width: 82vw;
+}
+
+.flag-icon {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  border: 1px solid #9a6ebb61;
+  background: #9a6ebb61;
+  position: relative;
+}
+
+.flag-icon::after, .flag-icon::before {
+  content: '';
+  width: 1px;
+  height: 7px;
+  background: #9a6ebb61;
+  position: absolute;
+  top: -7px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.flag-icon::before {
+  top: 16px;
+}
+
+.flag-title {
+  color: #797979;
+  font-size: 1em;
+  padding-left: 10px;
+}
+
+.flag-time {
+  color: #d9d1e0;
+  font-size: 0.8em;
+  padding-left: 15px;
+}
+
+.flag-img {
+  width: 16px;
+  height: 16px;
+  padding-left: 20px;
+}
+
+.calendar-content{
+  margin-top: 10px;
+	width: 96vw;
+  border-radius: 10px;
+  background: #fcfbfd;
+}
+
+.calendar-header{
+	width: 100%;
+	height: 1.2em;
+	font-size: 1.1em;
+	font-family: 'Microsoft YaHei',fantasy;
+	color: #be8dbd;
+	text-align: center;
+	overflow: hidden;
+	border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  margin: 5px 0;
+}
+
+.calendar-header #prev, .calendar-header #next{
+	width: 0.9em;
+  height: 0.9em;
+}
+
+#calendar-content{
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+	width: 96vw;
+  flex-wrap: wrap;
+  border-bottom-left-radius: 10px;
+  border-bottom-right-radius: 10px;
+  margin: 0 auto;
+}
+
+.week, .dates {
+  width: 14.2%;
+  height: 20px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  color: #797979;
+}
+
+.dateAddColor {
+  color: #9047c461;
+}
+
+.weekdays{
+	width: 50px;
+	height: 50px;
+	box-sizing: border-box;
+	display: inline-block;
+	color: #cfb5e261;
+	font-family: 'Microsoft YaHei',fantasy;
+	vertical-align: top;
+	text-align: center;
+	font-size: 1.2em;
+	font-weight: 400;
+	line-height: 50px;
+	cursor: pointer;
+	border: 2px dashed transparent;
+}
+
+.weekdays:hover{
+	font-weight: 900;
+}
+
+.zeroNote {
+  text-align: center;
+  color: #797979;
+  font-size: 0.8em;
+  margin-top: 20px;
+}
+
+.timelist-title image{
+  width: 8vw;
+  height: 8vw;
+  margin-right: 20px;
+}
+
+.timelist-title text{
+  color: #797979;
+}
+
+.be-choosed {
+  box-sizing: border-box;
+  border-radius: 40%;
+  border: 1px dashed #9047c461;
 }

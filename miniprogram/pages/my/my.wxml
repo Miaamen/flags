@@ -1,0 +1,15 @@
+<!--pages/my/my.wxml-->
+<view class="all-container">
+  <view class="chart">
+    <ec-canvas force-use-old-canvas="true" class="ec" ec="{{ ec }}"></ec-canvas>
+  </view>
+  <view class="question">
+    <view class="question-title">  
+      <image src="../../images/question.png"></image>
+      <text>提出您的问题或建议？</text>
+    </view>
+    <textarea class="question-area" adjust-position="true" value="{{ message }}" bindinput="inputQuestion"></textarea>
+    <button class="question-btn" bindtap="submitQuestion">提交</button>
+  </view>
+</view>
+

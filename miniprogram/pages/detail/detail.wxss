@@ -111,7 +111,12 @@
   width: 1vw;
   height: 1.2vw;
   margin-top: 2px;
-  background: #e5d7f0;
+  background: #efebf3;
+  font-size: 0.1em;
+}
+
+.dayCellBeFlag {
+  background: #bf98dd;
 }
 
 .month {

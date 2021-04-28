@@ -1,3 +1,5 @@
+var db_util = require('../../utils/util.js');
+
 // pages/addFlag/addFlag.js
 Page({
 
@@ -9,7 +11,8 @@ Page({
     type: '',
     viewId: 0,
     nowDateString: '',
-    date: ''
+    date: '',
+    dateToDate: ''
   },
 
   /**
@@ -92,24 +95,31 @@ Page({
   },
   addFlag: function () {
     new Promise((resolve, reject) => {
-      const date = new Date().toLocaleDateString();
-      console.log('datedate', date);
+      const date = db_util.toNumberDate(db_util.getLocalTime(new Date().getTime(), 'date'));
+      const deadlineDate = db_util.toNumberDate(this.data.date);
+      console.log('jjj:', db_util.getLocalTime(new Date()), date, db_util.getLocalTime(new Date()).substring(0, 10))
+      const _ = wx.cloud.database().command;
       const flags = wx.cloud.database().collection('flags');
       flags.add({
         data: {
           name: this.data.title,
           type: this.data.type ? this.data.type : 'study',
-          deadline: this.data.date,
+          deadline: Number(deadlineDate),
           done: false,
           times: 0,
-          startDate: date
+          startDate: Number(date),
+          flagTime: []
         }
       })
+      
       resolve();
     }).then(() => {
+      console.log('thenthen')
       wx.navigateBack({
         delta: 1
       })
+    }).catch((error) => {
+      console.log('ssss', error);
     });
   }
 })

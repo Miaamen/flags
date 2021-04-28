@@ -2,12 +2,12 @@
 <view class="top-tap">
   <view class="date" bindtap="showCalendar">
     <image src="../../images/calendar.png"></image>
-    <text>03-02</text>
-    <image src="../../images/down.png" class="icon-down"></image>
+    <text>{{todayString}}</text>
+    <image src="../../images/{{ showCalen ? 'up.png' : 'down.png' }}" class="icon-down"></image>
   </view>
 </view>
 
-<view class="flags">
+<view class="flags" wx-if="{{flagList.length > 0}}">
   <view wx:for="{{flagList}}" wx:key="item">
     <view class="{{item.done ? 'flag-2' : 'flag-1'}}">
       <image class="logo" src="../../images/{{item.type}}.png"></image>
@@ -21,18 +21,9 @@
       </view>
     </view>
   </view>
-  <!-- <view class="flag-2">
-    <image class="logo" src="../../images/study.png"></image>
-    <view class="text">
-      <text class="title">站立一会</text>
-      <text class="times">每日一次</text>
-    </view>
-    <view class="done" bindtap="doneFlag">
-      <image class="done-icon" src="{{done}}"></image>
-      <text class="done-text">已完成flag</text>
-    </view>
-  </view> -->
 </view>
+
+<view class="temp-view" wx-if="{{flagList.length == 0}}"e>~~~ 今日没有flag ~~~</view>
 
 
 <view class="add-flag" bindtap="addFlag">
@@ -67,11 +58,14 @@
   </view>
 </view>
 
-<!-- <view class="calendar">
+<view class="calendar-content" wx-if="{{showCalen}}">
   <view class="calendar-header">
-		<view id="prev"><</view>
-<text><view id="months">JAN</view><view id="years"> 2020</view></text>
-	<view id="next">></view>
+    <image src="../../images/prev.png" id="prev" bindtap="prev"></image>
+		<text><text id="years">{{year}}年</text><text id="months"> {{month}}月</text></text>
+		<image src="../../images/next.png" id="next" bindtap="next"></image> 
+	</view>
+	<view id="calendar-content">
+    <view class="week" wx:for="{{week}}" wx:for-item="w" wx:for-index="idx">{{w}}</view>
+    <view wx:for="{{date}}" wx:for-item="d" wx:for-index="idx" class="dates {{ choosed == d ? 'be-choosed' : '' }} {{currDay == d ? 'dateAddColor' : 'jj' }}" bindtap="chooseDate" data-day="{{d}}">{{d}}</view>
+  </view>
 </view>
-<view id="calendar-content"></view>
-</view> -->

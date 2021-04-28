@@ -20,10 +20,10 @@
   <view class="detail-chart">
     <text class="add-text">累计坚持（天）</text>
     <text class="add-days">{{currentList.times}}</text>
-    <text class="year">2021年</text>
+    <text class="year">{{year}}年</text>
     <view class="container">
       <view class="monthCell" wx:for="{{cellList}}" wx:for-item="cell" wx:for-index="idx">
-        <view class="dayCell" wx:for="{{cell}}"></view>
+        <view wx:for="{{cell}}" wx:for-item="item" class="dayCell {{item == 2 ? 'dayCellBeFlag' : ''}}"></view>
         <text class="month">{{idx + 1}}月</text>
       </view>
     </view>

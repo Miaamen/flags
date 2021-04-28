@@ -11,9 +11,21 @@ App({
         //   如不填则使用默认环境（第一个创建的环境）
         env: 'xly-wvbmp',
         traceUser: true,
-      })
+      });
+      // const loginTime = wx.cloud.database().collection('loginTime');
+      // loginTime.add({
+      //   data: {
+      //     lastLogin: 20210427
+      //   }
+      // })
+      // new Promise((resovle, reject) => {
+      //   loginTime.get({
+      //     success(res) {
+      //       console.log('lognjjj:', res)
+      //     }
+      //   })
+      // })
     }
-
     this.globalData = {}
   }
 })

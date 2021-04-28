@@ -1,40 +1,32 @@
 <!--pages/note/note.wxml-->
 <view class="all-container">
-  <text class="title">今日flags</text>
-  <view class="date">
-    <view class="day">
-      <text class="week">日</text>
-      <text class="day-number">11</text>
+  <view class="calendar-content">
+		<view class="calendar-header">
+      <image src="../../images/prev.png" id="prev" bindtap="prev"></image>
+			<text><text id="years">{{year}}年</text><text id="months"> {{month}}月</text></text>
+			<image src="../../images/next.png" id="next" bindtap="next"></image> 
+		</view>
+		<view id="calendar-content">
+      <view class="week" wx:for="{{week}}" wx:for-item="w" wx:for-index="idx">{{w}}</view>
+      <view wx:for="{{date}}" wx:for-item="d" wx:for-index="idx" class="dates  {{ choosed == d ? 'be-choosed' : '' }} {{ currDay == d ? 'dateAddColor' : 'jj' }}" bindtap="chooseDate" data-day="{{d}}">{{d}}</view>
     </view>
-    <view class="day today">
-      <text class="week">一</text>
-      <text class="day-number">11</text>
-    </view>
-    <view class="day">
-      <text class="week">二</text>
-      <text class="day-number">11</text>
-    </view>
-    <view class="day">
-      <text class="week">三</text>
-      <text class="day-number">11</text>
-    </view>
-    <view class="day">
-      <text class="week">四</text>
-      <text class="day-number">11</text>
-    </view>
-    <view class="day">
-      <text class="week">五</text>
-      <text class="day-number">11</text>
-    </view>
-    <view class="day">
-      <text class="week">六</text>
-      <text class="day-number">11</text>
-    </view>
-  </view>
+	</view>
 
   <view class="today-detail">
-    <view class="chart">
-      <ec-canvas force-use-old-canvas="true" class="ec" ec="{{ ec }}"></ec-canvas>
+    <view class="timelist-title">
+      <image src="../../images/clock.png"></image>
+      <text>{{year}}年{{month}}月{{day}}日</text>
     </view>
+    <view class="flag" wx:for="{{list}}" wx:for-item="item" >
+      <view class="flag-icon"></view>
+      <text class="flag-time">{{item.flagTime[0].time}}</text>
+      <image class="flag-img" src="../../images/{{item.type}}.png"></image>
+      <text class="flag-title">{{item.name}}</text>
+    </view>
+    <view class="zeroNote" wx:if="{{list.length == 0}}">~~~ 这天没有记录 ~~~</view>
   </view>
+
+
+
+
 </view>
