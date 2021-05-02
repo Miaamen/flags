@@ -4,12 +4,11 @@
     <ec-canvas force-use-old-canvas="true" class="ec" ec="{{ ec }}"></ec-canvas>
   </view>
   <view class="question">
-    <view class="question-title">  
+    <!-- <view class="question-title">  
       <image src="../../images/question.png"></image>
       <text>提出您的问题或建议？</text>
-    </view>
-    <textarea class="question-area" adjust-position="true" value="{{ message }}" bindinput="inputQuestion"></textarea>
-    <button class="question-btn" bindtap="submitQuestion">提交</button>
+    </view> -->
+    <button class="question-btn" bindtap="submitQuestion" open-type="feedback">提出您的问题或建议？</button>
   </view>
 </view>
 

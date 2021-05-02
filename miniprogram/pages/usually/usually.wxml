@@ -1,0 +1,21 @@
+<!--pages/usually/usually.wxml-->
+<view class="cut-text">创建自定义计划</view>
+<view class="add-user-create" bindtap="userCreate">+自定义Flag</view>
+<view class="cut-text">从习惯集里选择</view>
+<view class="all-usually">
+  <view class="used" wx:for="{{usedList}}" wx:for-item="item" wx:for-index="idx" bindtap="addUsuallyFlag" data-item="{{item}}">
+    <image src="../../images/{{item.type}}.png"></image>
+    <text>{{item.text}}</text>
+  </view>
+</view>
+
+<view class="pick-date">
+  <picker mode="date" value="{{nowDateString}}" bindchange="bindDateChange">
+    <view class="picker">
+      {{date}}
+    </view>
+    <text>点击设置deadline</text>
+  </picker>
+</view>
+
+<view class="add-user-create submit-btn" bindtap="addUserCreate">确定</view>

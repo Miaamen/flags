@@ -1,0 +1,95 @@
+/* pages/usually/usually.wxss */
+.cut-text {
+  text-align: center;
+  color: #cfb5e2;
+  font-size: 0.9em;
+  position: relative;
+  background: #f6f6f6;
+}
+
+.cut-text::before, .cut-text::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: calc((94vw - 7em) / 2);
+  height: 1px;
+  background:linear-gradient(to right, #cfb5e2, #cfb5e2 2px,transparent 2px, transparent);
+  background-size: 6px 100%;
+}
+
+.cut-text::before {
+  left: 1vw;
+}
+
+.cut-text::after {
+  right: 1vw;
+}
+
+.add-user-create {
+  width: 90vw;
+  height: 1.5em;
+  color: #797979;
+  box-shadow: 0px 0px 5px #ccc;
+  border-radius: 10px;
+  margin: 15px auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+}
+
+.all-usually {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  margin-top: 10px;
+}
+
+.used {
+  width: calc((100vw - 80px) / 4);
+  box-shadow: 0px 0px 5px #ccc;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin: 10px;
+  box-sizing: border-box;
+}
+
+.used image {
+  width: 8vw;
+  height: 8vw;
+}
+
+.used text {
+  padding-top: 3px;
+  font-size: 0.6em;
+  color: #797979;
+}
+
+.pick-date {
+  width: 90vw;
+  height: 1.5em;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 15px auto;
+  box-shadow: 0px 0px 10px #ccc;
+  color: #797979;
+  padding: 10px;
+}
+
+.pick-date text {
+  font-size: 0.9em;
+}
+
+.submit-btn {
+  background: #cfb5e2;
+  color: #fff;
+  margin-top: 10px;
+}
