@@ -1,3 +1,5 @@
+var db_util = require('../../utils/util.js');
+
 let usedList = [
   {
     type: 'flower',
@@ -88,14 +90,24 @@ Page({
    * 页面的初始数据
    */
   data: {
-    usedList: usedList
+    usedList: usedList,
+    nowDateString: '',
+    date: '',
+    viewId: 0,
+    type: '',
+    text: ''
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    var nowDate = new Date();
+    var year = nowDate.getFullYear(), month = db_util.add0(nowDate.getMonth() + 1), day = db_util.add0(nowDate.getDate());
+    this.setData({
+      nowDateString: `${year}-${month}-${day}`,
+      date: `${year}-${month}-${day}`
+    })
   },
 
   /**
@@ -166,8 +178,45 @@ Page({
     })
   },
   addUsuallyFlag: function (e) {
-    const type = e.currentTarget.dataset.item.type;
-    const title = e.currentTarget.dataset.item.text;
-    
-  }
+    // const type = e.currentTarget.dataset.item.type;
+    // const title = e.currentTarget.dataset.item.text;
+    new Promise((resolve, reject) => {
+      const date = db_util.toNumberDate(db_util.getLocalTime(new Date().getTime(), 'date'));
+      const deadlineDate = db_util.toNumberDate(this.data.date);
+      const _ = wx.cloud.database().command;
+      const flags = wx.cloud.database().collection('flags');
+      flags.add({
+        data: {
+          // name: title,
+          // type: type,
+          name: this.data.text,
+          type: this.data.type,
+          deadline: Number(deadlineDate),
+          done: false,
+          times: 0,
+          startDate: Number(date),
+          flagTime: []
+        }
+      });
+      resolve();
+    }).then(() => {
+      wx.navigateBack({
+        delta: 1
+      })
+    }).catch((error) => {
+    });
+  },
+  selectType: function (e) {
+    this.setData({
+      viewId: e.currentTarget.dataset.index,
+      text: e.currentTarget.dataset.item.text,
+      type: e.currentTarget.dataset.item.type
+    })
+    console.log('select:::', e.currentTarget.dataset.index, this.data.viewId)
+  },
+  bindDateChange: function (e) {
+    this.setData({
+      date: e.detail.value
+    })
+  },
 })

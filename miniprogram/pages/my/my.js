@@ -1,6 +1,9 @@
 import * as echarts from "../../ec-canvas/echarts";
 
 var db_util = require('../../utils/util.js');
+const db = wx.cloud.database();
+const _ = db.command;
+
 var option = {
   title: {
     text: 'Flags完成情况',
@@ -86,7 +89,39 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    const weekData = wx.cloud.database().collection('weekData');
+    let temp = [];
+    new Promise((resolve, reject) => {
+      // weekData.add({
+      //   data: {
+      //     mon: 10,
+      //     thes: 20,
+      //     wed: 30,
+      //     thur: 40,
+      //     fri: 50,
+      //     sat: 60, 
+      //     sun: 70
+      //   }
+      // })
+      weekData.get({
+        success: function (res) {
+          temp = res.data[0];
+          resolve();
+        }
+      });
+      
+    })
+    .then(() => {
+      let option = {
+        series: [
+          {
+            data: temp.week.slice(-7),
+            // data: [0.2, 0.2, 0.2, 0.2, 0.5, 0.2, 0],
+          }
+        ]
+      };
+      chart.setOption(option);
+    })
   },
 
   /**

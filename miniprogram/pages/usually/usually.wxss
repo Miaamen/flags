@@ -82,6 +82,7 @@
   box-shadow: 0px 0px 10px #ccc;
   color: #797979;
   padding: 10px;
+  text-align: center;
 }
 
 .pick-date text {
@@ -92,4 +93,8 @@
   background: #cfb5e2;
   color: #fff;
   margin-top: 10px;
+}
+
+.selected {
+  background: #cfb5e27d;
 }

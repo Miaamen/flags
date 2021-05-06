@@ -93,9 +93,12 @@ Page({
     const _this = this;
     let temp = {};
     new Promise((resolve, reject) => {
+      console.log('proporporp');
       eventChannel.on('acceptDataFromOpenerPage', function (data) {
-        id = data.datasetId
+        id = data.datasetId;
+        console.log('jjjahhaha::::', data, data.datasetId)
       })
+      
       resolve();
     }).then(() => {
       console.log('ididid', id);
@@ -130,6 +133,9 @@ Page({
           ]
         };
         chart.setOption(option);
+        wx.hideLoading();
+      })
+      .catch(() => {
         wx.hideLoading();
       })
     });

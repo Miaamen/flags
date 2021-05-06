@@ -3,7 +3,7 @@
 <view class="add-user-create" bindtap="userCreate">+自定义Flag</view>
 <view class="cut-text">从习惯集里选择</view>
 <view class="all-usually">
-  <view class="used" wx:for="{{usedList}}" wx:for-item="item" wx:for-index="idx" bindtap="addUsuallyFlag" data-item="{{item}}">
+  <view wx:for="{{usedList}}" wx:for-item="item" wx:for-index="idx" bindtap="selectType" data-item="{{item}}" data-index="{{idx}}" class="used  {{viewId == idx ? 'selected' : ''}}">
     <image src="../../images/{{item.type}}.png"></image>
     <text>{{item.text}}</text>
   </view>
@@ -18,4 +18,4 @@
   </picker>
 </view>
 
-<view class="add-user-create submit-btn" bindtap="addUserCreate">确定</view>
+<view class="add-user-create submit-btn" bindtap="addUsuallyFlag">确定</view>

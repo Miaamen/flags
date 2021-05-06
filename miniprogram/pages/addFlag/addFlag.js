@@ -20,7 +20,7 @@ Page({
    */
   onLoad: function (options) {
     var nowDate = new Date();
-    var year = nowDate.getFullYear(), month = nowDate.getMonth() + 1, day = nowDate.getDate();
+    var year = nowDate.getFullYear(), month = db_util.add0(nowDate.getMonth() + 1), day = db_util.add0(nowDate.getDate());
     this.setData({
       nowDateString: `${year}-${month}-${day}`,
       date: `${year}-${month}-${day}`
@@ -116,7 +116,7 @@ Page({
     }).then(() => {
       console.log('thenthen')
       wx.navigateBack({
-        delta: 1
+        delta: 2
       })
     }).catch((error) => {
       console.log('ssss', error);

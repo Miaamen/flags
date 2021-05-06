@@ -1,11 +1,13 @@
 {
   "pages": [
-    "pages/usually/usually",
+    "pages/my/my",
     "pages/flags/flags",
+    "pages/usually/usually",
+    
     "pages/note/note",
     "pages/addFlag/addFlag",
     "pages/detail/detail",
-    "pages/my/my",
+    
     "pages/create/create",
     "pages/index/index",
     "pages/userConsole/userConsole",

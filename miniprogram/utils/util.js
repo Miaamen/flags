@@ -71,7 +71,8 @@ module.exports = {
   getTimeString: getTimeString,
   toDate: toDate,
   toNumberDate: toNumberDate,
-  changeFlag: changeFlag
+  changeFlag: changeFlag,
+  add0: add0
 }
 
 

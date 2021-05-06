@@ -19,6 +19,8 @@ var blank = firstDayOfMonth.getDay();
 var nowDate = Number(db_util.toNumberDate(db_util.getLocalTime(new Date().getTime(), 'date')));
 
 const flags = wx.cloud.database().collection('flags');
+const loginTime = wx.cloud.database().collection('loginTime');
+const weekData = wx.cloud.database().collection('weekData');
 // pages/flags/flags.js
 Page({
 
@@ -53,14 +55,18 @@ Page({
       todayString: todayDate
     })
     this.showDate(curYear, curMonth);
-
-    const loginTime = wx.cloud.database().collection('loginTime');
     new Promise((resovle, reject) => {
       loginTime.get({
         success(res) {
-          console.log('lognjjj:', res.data)
+          console.log('lognjjj:', res.data, res.data[0].lastLogin, nowDate, res.data[0].lastLogin == nowDate)
           if (res.data.length < 1) {
-            console.log('lognjjsssj:', res.data)
+            console.log('lognjjsssj:', res.data);
+            weekData.add({
+              data: {
+                week: [0, 0, 0, 0, 0, 0, 0],
+                flag: true
+              }
+            });
             loginTime.add({
               data: {
                 lastLogin: 20210427
@@ -74,7 +80,7 @@ Page({
                 done: false
               }
             });
-          } else if (res.data.lastLogin != nowDate) {
+          } else if (res.data[0].lastLogin != nowDate) {
             flags.where({
               done: true
             })
@@ -128,6 +134,7 @@ Page({
             flagList: res.data
           })
           console.log('hhhhhhasdgddddddd:', res);
+          _this.showWeekData(res.data.length);
           wx.hideLoading();
         }
       })
@@ -253,13 +260,48 @@ Page({
     })
   },
   showDetail: function(e) {
+    const id = e.currentTarget.dataset.id;
     wx.navigateTo({
       url: '../detail/detail',
       events: {},
       success: function (res) {
         // 通过eventChannel向被打开页面传送数据
-        res.eventChannel.emit('acceptDataFromOpenerPage', { datasetId: e.currentTarget.dataset.id })
+        res.eventChannel.emit('acceptDataFromOpenerPage', { datasetId: id })
       }
+    })
+  },
+
+  showWeekData: function (allNum) {
+    let weekOfToday = 0;
+    let doneNum = 0;
+
+    new Promise((resovle, reject) => {
+      console.log(111)
+      flags.where({
+        done: true
+      })
+        .get({
+          success: function (res) {
+            console.log(222)
+            // res.data 是包含以上定义的两条记录的数组
+            doneNum = res.data.length;
+            resovle();
+          }
+        });
+    }).then(() => {
+      console.log(444)
+      weekOfToday = Number((doneNum / allNum).toFixed(2));
+      console.log('weekOfTodayweekOfTodayweekOfToday', weekOfToday);
+      weekData.where({
+        flag: true
+      })
+        .update({
+          data: {
+            week: _.push(weekOfToday)
+          }
+        })
+    }).catch((e) => {
+      console.log(444, e)
     })
   },
 
