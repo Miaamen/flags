@@ -65,6 +65,15 @@ function toNumberDate(date) {
   return date;
 }
 
+/**
+ * 获取今天和前七天的日期
+ */
+function getSevent() {
+  var date1 = getLocalTime(new Date().getTime(), 'date');
+  var date2 = getLocalTime(new Date().getTime() - (7 * 24 * 60 * 60 * 1000), 'date');
+  return toNumberDate(date1) + '~' + toNumberDate(date2);
+}
+
 // 通过module.exports方式提供给外部调用
 module.exports = {
   getLocalTime: getLocalTime,
@@ -72,7 +81,8 @@ module.exports = {
   toDate: toDate,
   toNumberDate: toNumberDate,
   changeFlag: changeFlag,
-  add0: add0
+  add0: add0,
+  getSevent: getSevent
 }
 
 

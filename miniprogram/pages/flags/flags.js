@@ -123,7 +123,7 @@ Page({
     wx.showLoading({
       title: '加载中',
     })
-    
+    console.log('noewhhh:', nowDate)
     flags.where({
       startDate: _.lte(nowDate),
       deadline: _.gte(nowDate)

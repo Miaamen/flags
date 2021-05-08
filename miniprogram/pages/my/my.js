@@ -4,9 +4,32 @@ var db_util = require('../../utils/util.js');
 const db = wx.cloud.database();
 const _ = db.command;
 
+var allFlags = [
+  {
+    title: '任务详情',
+    sevent: '-6',
+    six: '-5',
+    five: '-4',
+    four: '-3',
+    three: '-2',
+    two: '-1',
+    one: '今'
+  },
+  {
+    title: '早起',
+    sevent: 0,
+    six: 1,
+    five: 0,
+    four: 1,
+    three: 0,
+    two: 1,
+    one: 1
+  }
+]
+
 var option = {
   title: {
-    text: 'Flags完成情况',
+    text: '最近七日Flags完成情况',
     left: 'center',
     textStyle: {
       //文字颜色
@@ -21,7 +44,7 @@ var option = {
   },
   xAxis: {
     type: 'category',
-    data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+    data: ['-6day', '-5', '-4', '-3', '-2', '-1day', 'Today'],
     axisLine: {
       lineStyle: {
         // 设置x轴颜色
@@ -82,7 +105,8 @@ Page({
     ec: {
       onInit: initChart
     },
-    message: ''
+    message: '',
+    allFlags: allFlags
   },
 
   /**
@@ -90,7 +114,11 @@ Page({
    */
   onLoad: function (options) {
     const weekData = wx.cloud.database().collection('weekData');
+    const flags = wx.cloud.database().collection('flags');
+    const weekFlags = wx.cloud.database().collection('weekFlags');
     let temp = [];
+    let flagsTemp = allFlags;
+    let flag = [];
     new Promise((resolve, reject) => {
       // weekData.add({
       //   data: {
@@ -121,7 +149,48 @@ Page({
         ]
       };
       chart.setOption(option);
+    });
+
+    new Promise((resolve, reject) => {
+      // weekFlags.add({
+      //   data: {
+      //     mon: 0,
+      //     thes: 1,
+      //     wed: 1,
+      //     thur: 0,
+      //     fri: 0,
+      //     sat: 1,
+      //     sun: 1,
+      //     title: '早起'
+      //   }
+      // })
+      const dates = db_util.getSevent().split('~');
+      console.log('haaaaa:', dates)
+      flags.where({
+        startDate: _.lte(Number(dates[1])),
+        deadline: _.gte(Number(dates[0]))
+      })
+        .get({
+          success(res) {
+            res.data.forEach(item => {
+              flag.push(item.title, item.flagTime)
+            })
+            console.log('hhhhhhasdgee:', flag);
+          }
+        })
+      weekFlags.get({
+        success: function (res) {
+          flagsTemp.push(res.data[0]);
+          resolve();
+        }
+      });
+
     })
+      .then(() => {
+        this.setData({
+          allFlags: flagsTemp
+        })
+      })
   },
 
   /**

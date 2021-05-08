@@ -6,7 +6,7 @@
   background: #fcfbfd;
 }
 
-.chart, .question {
+.chart, .question, .flag-details {
   background: #fff;
   width: 90vw;
   margin: 15px auto;
@@ -60,4 +60,58 @@
   color: #fff;
   margin: 20px 15px;
   border-radius: 20px;
+}
+
+.flag-details {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.flag-details .main-title, .flag-details .time-title{
+  color: #797979;
+  font-size: 0.6em;
+  padding-top: 5px;
+}
+
+.flag-details .main-title {
+  color: #cfb5e2;
+  padding-top: 10px;
+  font-size: 0.9em;
+}
+
+.cell-container {
+  margin: 10px auto;
+  width: 80vw;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.cells {
+  display: flex;
+  flex-direction: row;
+  width: 80vw;
+}
+
+.cell {
+  color: #797979;
+  font-size: 0.8em;
+  padding: 3px;
+  border: 1px solid #ccc;
+}
+
+.cell-title {
+  width: 31vw;
+  overflow: hidden;
+}
+
+.days {
+  width: 7vw;
+}
+
+.cell image {
+  width: 5vw;
+  height: 5vw;
 }
