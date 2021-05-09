@@ -4,55 +4,46 @@
     <ec-canvas force-use-old-canvas="true" class="ec" ec="{{ ec }}"></ec-canvas>
   </view>
   <view class="flag-details">
-    <text class="main-title">本周Flags进展</text>
-    <text class="time-title">05-02 ~ 05-08</text>
-    <!-- <text>{{lastSevent}} ~ {{today}}</text> -->
+    <text class="main-title">近七日小紫hua</text>
+    <!-- <text class="time-title">05-02 ~ 05-08</text> -->
+    <text class="time-title">{{lastSevent}} ~ {{today}}</text>
     <view class="cell-container">
-      <!-- <view class="cells"> -->
-      <!-- <view class="cell cell-title">任务详情</view>
-        <view class="cell days sevent">-6</view>
-        <view class="cell days six">-5</view>
-        <view class="cell days five">-4</view>
-        <view class="cell days four">-3</view>
-        <view class="cell days three">-2</view>
-        <view class="cell days two">-1</view>
-        <view class="cell days one">today</view> -->
       <view class="cells" wx:for="{{allFlags}}" wx:for-item="item" wx:for-index="idx">
         <view class="cell cell-title">{{item.title}}</view>
         <view class="cell days sevent">
-          <image wx:if="{{item.sevent == 1}}" src="../../images/huahua.png"></image>
-          <text wx:if="{{item.sevent == 0}}"></text>
-          <text wx:if="{{item.sevent != 0 && item.sevent != 1}}">{{item.sevent}}</text>
+          <image wx:if="{{item.week[0] == 1}}" src="../../images/huahua.png"></image>
+          <text wx:if="{{item.week[0] == 0}}"></text>
+          <text wx:if="{{item.week[0] != 0 && item.week[0] != 1}}">{{item.week[0]}}</text>
         </view>
         <view class="cell days six">
-          <image wx:if="{{item.six == 1}}" src="../../images/huahua.png"></image>
-          <text wx:if="{{item.six == 0}}"></text>
-          <text wx:if="{{item.six != 0 && item.six != 1}}">{{item.six}}</text>
+          <image wx:if="{{item.week[1] == 1}}" src="../../images/huahua.png"></image>
+          <text wx:if="{{item.week[1] == 0}}"></text>
+          <text wx:if="{{item.week[1] != 0 && item.week[1] != 1}}">{{item.week[1]}}</text>
         </view>
         <view class="cell days five">
-          <image wx:if="{{item.five == 1}}" src="../../images/huahua.png"></image>
-          <text wx:if="{{item.five == 0}}"></text>
-          <text wx:if="{{item.five != 0 && item.five != 1}}">{{item.five}}</text>
+          <image wx:if="{{item.week[2] == 1}}" src="../../images/huahua.png"></image>
+          <text wx:if="{{item.week[2] == 0}}"></text>
+          <text wx:if="{{item.week[2] != 0 && item.week[2] != 1}}">{{item.week[2]}}</text>
         </view>
         <view class="cell days four">
-          <image wx:if="{{item.four == 1}}" src="../../images/huahua.png"></image>
-          <text wx:if="{{item.four == 0}}"></text>
-          <text wx:if="{{item.four != 0 && item.four != 1}}">{{item.four}}</text>
+          <image wx:if="{{item.week[3] == 1}}" src="../../images/huahua.png"></image>
+          <text wx:if="{{item.week[3] == 0}}"></text>
+          <text wx:if="{{item.week[3] != 0 && item.week[3] != 1}}">{{item.week[3]}}</text>
         </view>
         <view class="cell days three">
-          <image wx:if="{{item.three == 1}}" src="../../images/huahua.png"></image>
-          <text wx:if="{{item.three == 0}}"></text>
-          <text wx:if="{{item.three != 0 && item.three != 1}}">{{item.three}}</text>
+          <image wx:if="{{item.week[4] == 1}}" src="../../images/huahua.png"></image>
+          <text wx:if="{{item.week[4] == 0}}"></text>
+          <text wx:if="{{item.week[4] != 0 && item.week[4] != 1}}">{{item.week[4]}}</text>
         </view>
         <view class="cell days two">
-          <image wx:if="{{item.two == 1}}" src="../../images/huahua.png"></image>
-          <text wx:if="{{item.two == 0}}"></text>
-          <text wx:if="{{item.two != 0 && item.two != 1}}">{{item.two}}</text>
+          <image wx:if="{{item.week[5] == 1}}" src="../../images/huahua.png"></image>
+          <text wx:if="{{item.week[5] == 0}}"></text>
+          <text wx:if="{{item.week[5] != 0 && item.week[5] != 1}}">{{item.week[5]}}</text>
         </view>
         <view class="cell days one">
-          <image wx:if="{{item.one == 1}}" src="../../images/huahua.png"></image>
-          <text wx:if="{{item.one == 0}}"></text>
-          <text wx:if="{{item.one != 0 && item.one != 1}}">{{item.one}}</text>
+          <image wx:if="{{item.week[6] == 1}}" src="../../images/huahua.png"></image>
+          <text wx:if="{{item.week[6] == 0}}"></text>
+          <text wx:if="{{item.week[6] != 0 && item.week[6] != 1}}">{{item.week[6]}}</text>
         </view>
       </view>
     </view>
