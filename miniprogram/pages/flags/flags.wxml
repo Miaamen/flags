@@ -69,3 +69,5 @@
     <view wx:for="{{date}}" wx:for-item="d" wx:for-index="idx" class="dates {{ choosed == d ? 'be-choosed' : '' }} {{currDay == d ? 'dateAddColor' : 'jj' }}" bindtap="chooseDate" data-day="{{d}}">{{d}}</view>
   </view>
 </view>
+
+<view></view>

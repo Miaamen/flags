@@ -261,12 +261,13 @@ Page({
   },
   showDetail: function(e) {
     const id = e.currentTarget.dataset.id;
+    const list = this.data.currentList
     wx.navigateTo({
       url: '../detail/detail',
       events: {},
       success: function (res) {
         // 通过eventChannel向被打开页面传送数据
-        res.eventChannel.emit('acceptDataFromOpenerPage', { datasetId: id })
+        res.eventChannel.emit('acceptDataFromOpenerPage', { datasetId: id, datasetList: list })
       }
     })
   },

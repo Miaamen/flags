@@ -96,9 +96,8 @@ Page({
       console.log('proporporp');
       eventChannel.on('acceptDataFromOpenerPage', function (data) {
         id = data.datasetId;
-        console.log('jjjahhaha::::', data, data.datasetId)
+        temp = data.datasetList;
       })
-      
       resolve();
     }).then(() => {
       console.log('ididid', id);
@@ -109,7 +108,12 @@ Page({
             _this.setData({
               currentList: res.data
             })
-            temp = res.data;
+            resolve();
+          },
+          fail(res) {
+            _this.setData({
+              currentList: temp
+            })
             resolve();
           }
         });
@@ -117,7 +121,7 @@ Page({
         console.log('uuquququ:', this.data.currentList, this.data.currentList.type)
         this.dateCell(this.data.currentList.flagTime);
         const allDay = _this.differDay(this.data.currentList.startDate, this.data.currentList.deadline);
-        doneValue = (Number(temp.times) / Number(allDay) * 100).toFixed(2);
+        doneValue = (Number(temp.times) / Number(allDay) * 100) == Infinity ? 100 : (Number(temp.times) / Number(allDay) * 100).toFixed(2);
         console.log('alll',temp.times, allDay, doneValue);
         let option = {
           title: {
@@ -127,15 +131,12 @@ Page({
             {
               data: [
                 { value: doneValue, name: '已经打卡' },
-                { value: 100, name: '没有打卡' }
+                { value: 100 - doneValue, name: '没有打卡' }
               ]
             }
           ]
         };
         chart.setOption(option);
-        wx.hideLoading();
-      })
-      .catch(() => {
         wx.hideLoading();
       })
     });

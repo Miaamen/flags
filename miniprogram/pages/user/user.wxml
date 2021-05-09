@@ -1,0 +1,5 @@
+<!--pages/user/user.wxml-->
+<view>
+  <text>需要获取您的信息才可进入页面</text>
+  <button class="confirm" open-type="getUserInfo" bindgetuserinfo="getUserInfo">确定</button>
+</view>

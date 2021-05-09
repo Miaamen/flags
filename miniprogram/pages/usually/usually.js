@@ -94,8 +94,8 @@ Page({
     nowDateString: '',
     date: '',
     viewId: 0,
-    type: '',
-    text: ''
+    type: 'flower',
+    text: '浇花'
   },
 
   /**

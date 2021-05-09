@@ -115,3 +115,18 @@
   width: 5vw;
   height: 5vw;
 }
+
+.user {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+}
+
+.user-img {
+  width: 20vw;
+  height: 20vw;
+  border-radius: 50%;
+  border: 3px solid #ccc;
+  margin: 20px auto 10px;
+}

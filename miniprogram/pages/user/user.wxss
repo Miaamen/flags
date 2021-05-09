@@ -1,0 +1,22 @@
+/* pages/user/user.wxss */
+view {
+  width: 100vw;
+  height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+text {
+  font-size: 0.8em;
+  color: #797979;
+  padding-bottom: 20px;
+}
+
+button {
+  background: #cfb5e2;
+  color: #fff;
+}
+

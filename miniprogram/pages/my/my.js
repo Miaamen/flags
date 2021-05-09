@@ -7,23 +7,7 @@ const _ = db.command;
 var allFlags = [
   {
     title: '任务详情',
-    sevent: '-6',
-    six: '-5',
-    five: '-4',
-    four: '-3',
-    three: '-2',
-    two: '-1',
-    one: '今'
-  },
-  {
-    title: '早起',
-    sevent: 0,
-    six: 1,
-    five: 0,
-    four: 1,
-    three: 0,
-    two: 1,
-    one: 1
+    week: ['-6', '-5', '-4', '-3', '-2', '-1', '今']
   }
 ]
 
@@ -95,6 +79,8 @@ function initChart(canvas, width, height) {
   return chart;
 }
 
+const dates = db_util.getSevent().split('~');
+
 // pages/my/my.js
 Page({
 
@@ -106,98 +92,127 @@ Page({
       onInit: initChart
     },
     message: '',
-    allFlags: allFlags
+    allFlags: allFlags,
+    lastSevent: '',
+    today: '',
+    userInfo: {}
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    const _this = this;
+    wx.getStorage({
+      key: 'userInfo',
+      success: function(res) {
+        console.log('rrrrreeess', res)
+        _this.setData({
+          userInfo: res.data
+        })
+      },
+    })
+
+    this.setData({
+      lastSevent: dates[0].substring(4, 6) + '-' + dates[0].substring(6),
+      today: dates[1].substring(4, 6) + '-' + dates[1].substring(6)
+    })
+
     const weekData = wx.cloud.database().collection('weekData');
     const flags = wx.cloud.database().collection('flags');
     const weekFlags = wx.cloud.database().collection('weekFlags');
     let temp = [];
     let flagsTemp = allFlags;
     let flag = [];
-    new Promise((resolve, reject) => {
-      // weekData.add({
-      //   data: {
-      //     mon: 10,
-      //     thes: 20,
-      //     wed: 30,
-      //     thur: 40,
-      //     fri: 50,
-      //     sat: 60, 
-      //     sun: 70
-      //   }
-      // })
-      weekData.get({
-        success: function (res) {
-          temp = res.data[0];
-          resolve();
-        }
-      });
+    
+    // new Promise((resolve, reject) => {
+    //   // weekData.add({
+    //   //   data: {
+    //   //     mon: 10,
+    //   //     thes: 20,
+    //   //     wed: 30,
+    //   //     thur: 40,
+    //   //     fri: 50,
+    //   //     sat: 60, 
+    //   //     sun: 70
+    //   //   }
+    //   // })
+    //   weekData.get({
+    //     success: function (res) {
+    //       temp = res.data[0];
+    //       resolve();
+    //     }
+    //   });
       
-    })
-    .then(() => {
-      let option = {
-        series: [
-          {
-            data: temp.week.slice(-7),
-            // data: [0.2, 0.2, 0.2, 0.2, 0.5, 0.2, 0],
-          }
-        ]
-      };
-      chart.setOption(option);
-    });
+    // })
+    // .then(() => {
+    //   let option = {
+    //     series: [
+    //       {
+    //         data: temp.week.slice(-7),
+    //       }
+    //     ]
+    //   };
+    //   chart.setOption(option);
+    // });
 
     new Promise((resolve, reject) => {
-      // weekFlags.add({
-      //   data: {
-      //     mon: 0,
-      //     thes: 1,
-      //     wed: 1,
-      //     thur: 0,
-      //     fri: 0,
-      //     sat: 1,
-      //     sun: 1,
-      //     title: '早起'
-      //   }
-      // })
-      const dates = db_util.getSevent().split('~');
-      console.log('haaaaa:', dates)
       flags.where({
-        startDate: _.lte(Number(dates[1])),
-        deadline: _.gte(Number(dates[0]))
+        deadline: _.gte(Number(dates[1]))
       })
         .get({
           success(res) {
             res.data.forEach(item => {
-              flag.push(item.title, item.flagTime)
+              flag.push([item.name, item.flagTime])
             })
-            console.log('hhhhhhasdgee:', flag);
+            resolve();
           }
         })
-      weekFlags.get({
-        success: function (res) {
-          flagsTemp.push(res.data[0]);
-          resolve();
-        }
-      });
-
     })
-      .then(() => {
+    .then(() => {
+      let tempArr = Array(7).fill(0);
+      let arrLength = flag.length;
+      flag.forEach(item => {
+        let temp = {};
+        temp.title = item[0];
+        let arrTemp = Array(7).fill(0);
+        item[1].forEach(ele => {
+          let dateT = dates[1].substring(0, 4) + '-' + dates[1].substring(4, 6) + '-' + dates[1].substring(6);
+          const dateTemp = db_util.howDate(dateT, ele.date);
+          if(dateTemp < 7) {
+            arrTemp[6 - dateTemp] = 1;
+            tempArr[6 - dateTemp] += 1;
+          }
+        })
+        temp.week = arrTemp;
+        flagsTemp.push(temp);
         this.setData({
           allFlags: flagsTemp
-        })
+        });
+      });
+
+      let arr = [];
+      tempArr.forEach(item => {
+        arr.push(Number(((item / arrLength)).toFixed(2)));
       })
+      
+      console.log('hhhhhaaaaasssss:', arr);
+
+      let option = {
+        series: [
+          {
+            data: arr
+          }
+        ]
+      };
+      chart.setOption(option);
+    })
   },
 
   /**
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
   },
 
   /**
