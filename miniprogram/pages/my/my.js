@@ -81,6 +81,8 @@ function initChart(canvas, width, height) {
 
 const dates = db_util.getSevent().split('~');
 
+var openid;
+
 // pages/my/my.js
 Page({
 
@@ -103,15 +105,6 @@ Page({
    */
   onLoad: function (options) {
     const _this = this;
-    wx.getStorage({
-      key: 'userInfo',
-      success: function(res) {
-        console.log('rrrrreeess', res)
-        _this.setData({
-          userInfo: res.data
-        })
-      },
-    })
 
     this.setData({
       lastSevent: dates[0].substring(4, 6) + '-' + dates[0].substring(6),
@@ -157,55 +150,74 @@ Page({
     // });
 
     new Promise((resolve, reject) => {
-      flags.where({
-        deadline: _.gte(Number(dates[1]))
+      wx.getStorage({
+        key: 'userInfo',
+        success: function (res) {
+          openid = res.data.openid;
+          _this.setData({
+            userInfo: res.data
+          });
+          resolve();
+        },
+        fail: function () {
+          resolve();
+        }
       })
-        .get({
-          success(res) {
-            res.data.forEach(item => {
-              flag.push([item.name, item.flagTime])
-            })
-            resolve();
-          }
-        })
     })
     .then(() => {
-      let tempArr = Array(7).fill(0);
-      let arrLength = flag.length;
-      flag.forEach(item => {
-        let temp = {};
-        temp.title = item[0];
-        let arrTemp = Array(7).fill(0);
-        item[1].forEach(ele => {
-          let dateT = dates[1].substring(0, 4) + '-' + dates[1].substring(4, 6) + '-' + dates[1].substring(6);
-          const dateTemp = db_util.howDate(dateT, ele.date);
-          if(dateTemp < 7) {
-            arrTemp[6 - dateTemp] = 1;
-            tempArr[6 - dateTemp] += 1;
-          }
+      console.log('jjj')
+      new Promise((resolve, reject) => {
+        flags.where({
+          _openid: openid,
+          deadline: _.gte(Number(dates[1]))
         })
-        temp.week = arrTemp;
-        flagsTemp.push(temp);
-        this.setData({
-          allFlags: flagsTemp
-        });
-      });
-
-      let arr = [];
-      tempArr.forEach(item => {
-        arr.push(Number(((item / arrLength)).toFixed(2)));
+          .get({
+            success(res) {
+              res.data.forEach(item => {
+                flag.push([item.name, item.flagTime])
+              })
+              resolve();
+            }
+          })
       })
-      
-      console.log('hhhhhaaaaasssss:', arr);
+        .then(() => {
+          let tempArr = Array(7).fill(0);
+          let arrLength = flag.length;
+          flag.forEach(item => {
+            let temp = {};
+            temp.title = item[0];
+            let arrTemp = Array(7).fill(0);
+            item[1].forEach(ele => {
+              let dateT = dates[1].substring(0, 4) + '-' + dates[1].substring(4, 6) + '-' + dates[1].substring(6);
+              const dateTemp = db_util.howDate(dateT, ele.date);
+              if (dateTemp < 7) {
+                arrTemp[6 - dateTemp] = 1;
+                tempArr[6 - dateTemp] += 1;
+              }
+            })
+            temp.week = arrTemp;
+            flagsTemp.push(temp);
+            this.setData({
+              allFlags: flagsTemp
+            });
+          });
 
-      let option = {
-        series: [
-          {
-            data: arr
-          }
-        ]
-      };
-      chart.setOption(option);
+          let arr = [];
+          tempArr.forEach(item => {
+            arr.push(Number(((item / arrLength)).toFixed(2)));
+          })
+
+          console.log('hhhhhaaaaasssss:', arr);
+
+          let option = {
+            series: [
+              {
+                data: arr
+              }
+            ]
+          };
+          chart.setOption(option);
+        })
     })
   },
 

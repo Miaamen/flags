@@ -25,6 +25,7 @@ App({
       //     }
       //   })
       // })
+
       wx.requestSubscribeMessage({
         tmplIds: ['8zSVCn_UqzksTCISUex7IrpJi8n6PFHb3lxPQIgM34s'],
         success(res) { }

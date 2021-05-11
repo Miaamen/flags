@@ -2,7 +2,10 @@ var db_util = require('../../utils/util.js');
 const db = wx.cloud.database();
 const _ = db.command;
 
+var openid;
+
 var date = new Date();
+var currentData = db_util.getLocalTime(new Date().getTime(), 'date');
 var curYear = date.getFullYear();
 var curMonth = date.getMonth();
 var curDay = date.getDate();
@@ -39,7 +42,8 @@ Page({
     week: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
     date: [],
     todayString: '',
-    choosed: null
+    choosed: null,
+    currentData: currentData
   },
 
   /**
@@ -114,30 +118,46 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    // flags.get({
-    //   success(res) {
-    //     console.log(res.data)
-    //   }
-    // })
     const _this = this;
     wx.showLoading({
       title: '加载中',
     })
-    console.log('noewhhh:', nowDate)
-    flags.where({
-      startDate: _.lte(nowDate),
-      deadline: _.gte(nowDate)
-    })
-      .get({
-        success(res) {
-          _this.setData({
-            flagList: res.data
-          })
-          console.log('hhhhhhasdgddddddd:', res);
-          _this.showWeekData(res.data.length);
-          wx.hideLoading();
+    new Promise((resovle, reject) => {
+      wx.getStorage({
+        key: 'userInfo',
+        success: function (res) {
+          openid = res.data.openid
+          console.log('res,', res, res.data.openid)
+          resovle();
+        },
+        fail: function () {
+          resovle();
         }
       })
+    })
+    .then (() => {
+      console.log('noewhhh:', nowDate, openid)
+      flags.where({
+        _openid: openid,
+        startDate: _.lte(nowDate),
+        deadline: _.gte(nowDate),
+      })
+        .get({
+          success(res) {
+            _this.setData({
+              flagList: res.data
+            })
+
+            wx.setStorage({
+              key: 'flagList',
+              data: res.data,
+            })
+            console.log('hhhhhhasdgddddddd:', res);
+            _this.showWeekData(res.data.length);
+            wx.hideLoading();
+          }
+        })
+    })
   },
 
   /**
@@ -206,6 +226,7 @@ Page({
     })
   },
   doneFlag: function (e) {
+    console.log('e.currentTarget.dataset.done', e.currentTarget.dataset.done)
     const id = e.currentTarget.dataset.id;
     const flags = wx.cloud.database().collection('flags');
     const _this = this;
@@ -222,7 +243,7 @@ Page({
               date: todayDate,
               time: todayTime
             }],
-            position: 1
+            position: 0
           })
         }
       }).then(res => {
@@ -325,6 +346,7 @@ Page({
       // todayDate: 20210427
       // deadline: 20210426
       // startDate: 20210427
+      _openid: openid,
       deadline: _.gte(todayDate),
       startDate: _.lte(todayDate)
     }).get({

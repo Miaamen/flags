@@ -17,6 +17,8 @@ var blank = firstDayOfMonth.getDay();
 const db = wx.cloud.database();
 const _ = db.command;
 
+var openid;
+
 // pages/note/note.js
 Page({
 
@@ -47,18 +49,32 @@ Page({
 
     const todayDate = db_util.getTimeString(curYear, mm[curMonth], curDay);
     
-    db.collection('flags').where({
-      flagTime: _.elemMatch({
-        date: todayDate
+    new Promise((resolve, reject) => {
+      wx.getStorage({
+        key: 'userInfo',
+        success: function (res) {
+          openid = res.data.openid;
+          resolve();
+        },
+        fail: function () {
+          resolve();
+        }
       })
-    }).get({
-      success: function (res) {
-        _this.setData({
-          list: res.data
+    })
+    .then(() => {
+      db.collection('flags').where({
+        _openid: openid,
+        flagTime: _.elemMatch({
+          date: todayDate
         })
-      }
-    });
-    
+      }).get({
+        success: function (res) {
+          _this.setData({
+            list: res.data
+          })
+        }
+      });
+    })
   },
 
   /**
@@ -220,6 +236,7 @@ Page({
     const todayDate = db_util.getTimeString(curYear, mm[curMonth], day);
     const _this = this;
     db.collection('flags').where({
+      _openid: openid,
       flagTime: _.elemMatch({
         date: todayDate
       })
