@@ -7,17 +7,22 @@
   </view>
 </view>
 
-<view class="flags" wx-if="{{flagList.length > 0}}">
+<view class="flags" wx-if="{{flagList.length > 0}}" bindtap="cancelTap">
   <view wx:for="{{flagList}}" wx:key="item">
-    <view class="{{item.done ? 'flag-2' : 'flag-1'}}">
+    <view class="{{item.done ? 'flag-2' : 'flag-1'}}" bindlongtap="dealFlag" bindtouchstart="bindTouchStart" bindtouchend="bindTouchEnd" catchtap="inbtn">
       <image class="logo" src="../../images/{{item.type}}.png"></image>
       <view class="text">
         <text class="title">{{item.name}}</text>
         <text class="times">每日一次</text>
       </view>
-      <view class="done" bindtap="doneFlag" data-id="{{item._id}}" data-done="{{item.done}}">
+      <view class="done" catchtap="doneFlag" data-id="{{item._id}}" data-done="{{item.done}}">
         <image class="done-icon" src="{{item.done ? '../../images/Heart.png' : '../../images/addHeart.png'}}"></image>
         <text class="done-text">{{item.done ? '已完成flag' : '去完成flag'}}</text>
+      </view>
+      <view class="cover-card" wx:if="{{showOpotion}}">
+        <image src="../../images/reject.png" bindtap="rejectFlag" data-id="{{item._id}}"></image>
+        <!-- <image src="../../images/edit.png" bindtap="editFlag" data-id="{{item._id}}"></image> -->
+        <image src="../../images/del.png" bindtap="delFlag" data-id="{{item._id}}"></image>
       </view>
     </view>
   </view>

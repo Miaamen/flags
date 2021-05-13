@@ -43,7 +43,8 @@ Page({
     date: [],
     todayString: '',
     choosed: null,
-    currentData: currentData
+    currentData: currentData,
+    showOpotion: false
   },
 
   /**
@@ -226,48 +227,50 @@ Page({
     })
   },
   doneFlag: function (e) {
-    console.log('e.currentTarget.dataset.done', e.currentTarget.dataset.done)
-    const id = e.currentTarget.dataset.id;
-    const flags = wx.cloud.database().collection('flags');
-    const _this = this;
-    const _ = wx.cloud.database().command
-    const todayDate = db_util.getLocalTime(new Date().getTime(), 'date');
-    const todayTime = db_util.getLocalTime(new Date().getTime(), 'time');
-    if(!e.currentTarget.dataset.done) {
-      flags.doc(id).update({
-        data: {
-          done: true,
-          times: _.inc(1),
-          flagTime: _.push({
-            each: [{
-              date: todayDate,
-              time: todayTime
-            }],
-            position: 0
-          })
-        }
-      }).then(res => {
+    if (this.data.endTime - this.data.startTime < 350) {
+      console.log('e.currentTarget.dataset.done', e.currentTarget.dataset.done)
+      const id = e.currentTarget.dataset.id;
+      const flags = wx.cloud.database().collection('flags');
+      const _this = this;
+      const _ = wx.cloud.database().command
+      const todayDate = db_util.getLocalTime(new Date().getTime(), 'date');
+      const todayTime = db_util.getLocalTime(new Date().getTime(), 'time');
+      if(!e.currentTarget.dataset.done) {
+        flags.doc(id).update({
+          data: {
+            done: true,
+            times: _.inc(1),
+            flagTime: _.push({
+              each: [{
+                date: todayDate,
+                time: todayTime
+              }],
+              position: 0
+            })
+          }
+        }).then(res => {
+          flags.doc(id).get({
+            success: function (res) {
+              _this.setData({
+                currentList: res.data,
+                showDone: true
+              })
+              _this.onShow();
+            }
+          });
+        }).catch(err => {
+          console.log('error', err);
+        });                                                                    
+      } else {
         flags.doc(id).get({
           success: function (res) {
             _this.setData({
               currentList: res.data,
-              showDone: true
+              showDetail: true
             })
-            _this.onShow();
           }
         });
-      }).catch(err => {
-        console.log('error', err);
-      });                                                                    
-    } else {
-      flags.doc(id).get({
-        success: function (res) {
-          _this.setData({
-            currentList: res.data,
-            showDetail: true
-          })
-        }
-      });
+      }
     }
   },
   closeDone: function (e) {
@@ -442,5 +445,134 @@ Page({
       });
       this.showDate(curYear, curMonth + 1);
     }
+  },
+
+  bindTouchStart: function (e) {
+    this.setData({
+      startTime: e.timeStamp
+    });
+  },
+
+  bindTouchEnd: function (e) {
+    this.setData({
+      endTime: e.timeStamp
+    });
+  },
+
+  /**
+   * 长按卡片
+   */
+  dealFlag: function (e) {
+    console.log(this.data.endTime, this.data.startTime)
+    console.log('dealFlag', e);
+    this.setData({
+      showOpotion: true
+    })
+  },
+
+  cancelTap: function (e) {
+    console.log('cancelTap:', e);
+    this.setData({
+      showOpotion: false
+    })
+  },
+
+  inbtn: function (e) {          //这个事件必须有，就算不做什么事情也要写上去，因为这个事件是为了防止事件冒泡，导致点击in-list这里面的元素时，点击事件冒泡到list-fix触发它的slidedown事件。
+    console.log("in")
+  },
+
+  /**
+   * 撤回打卡项
+   */
+  rejectFlag: function (e) {
+    console.log('reject', e);
+    const _this = this;
+    new Promise((resovle, reject) => {
+      flags.doc(e.currentTarget.dataset.id).update({
+        data: {
+          done: false,
+          times: _.inc(-1)
+        },
+        success: function (res) {
+          console.log('dledel', res.data);
+          resovle();
+        }
+      })
+    })
+      .then(() => {
+        console.log('ejthen');
+        wx.showLoading({
+          title: '撤回打卡中...',
+        });
+        flags.where({
+          _openid: openid,
+          startDate: _.lte(nowDate),
+          deadline: _.gte(nowDate),
+        })
+          .get({
+            success(res) {
+              _this.setData({
+                flagList: res.data
+              })
+
+              wx.setStorage({
+                key: 'flagList',
+                data: res.data,
+              })
+              wx.hideLoading();
+            }
+          })
+        _this.setData({
+          showOpotion: false
+        })
+      })
+  },
+
+  /**
+   * 编辑打卡项
+   */
+  editFlag: function (e) {
+    console.log('edit', e);
+  },
+
+  /**
+   * 删除打卡项
+   */
+  delFlag: function (e) {
+    const _this = this;
+    new Promise((resovle, reject) => {
+      flags.doc(e.currentTarget.dataset.id).remove({
+        success: function (res) {
+          resovle();
+        }
+      })
+    })
+    .then(() => {
+      wx.showLoading({
+        title: '删除打卡中...',
+      });
+      flags.where({
+        _openid: openid,
+        startDate: _.lte(nowDate),
+        deadline: _.gte(nowDate),
+      })
+        .get({
+          success(res) {
+            _this.setData({
+              flagList: res.data
+            })
+
+            wx.setStorage({
+              key: 'flagList',
+              data: res.data,
+            })
+            wx.hideLoading();
+          }
+        })
+      _this.setData({
+        showOpotion: false
+      })
+    })
+    
   }
 })

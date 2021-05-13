@@ -80,9 +80,7 @@ function initChart(canvas, width, height) {
 }
 
 const dates = db_util.getSevent().split('~');
-
 var openid;
-
 // pages/my/my.js
 Page({
 
@@ -105,7 +103,6 @@ Page({
    */
   onLoad: function (options) {
     const _this = this;
-
     this.setData({
       lastSevent: dates[0].substring(4, 6) + '-' + dates[0].substring(6),
       today: dates[1].substring(4, 6) + '-' + dates[1].substring(6)
