@@ -2,6 +2,9 @@
 <view class="all">
   <image class="icon" src="../../images/{{currentList.type}}.png"></image>
   <text class="main-title">{{currentList.name}}</text>
+  <view class="flag-text">
+    打卡日志：{{currentList.flagDetail}}
+  </view>
   <view class="detail-data">
     <view class="ec-chart">
       <ec-canvas force-use-old-canvas="true" class="ec" ec="{{ ec }}"></ec-canvas>

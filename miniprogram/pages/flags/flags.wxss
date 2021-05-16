@@ -342,3 +342,12 @@
   border-radius: 40%;
   border: 1px dashed #9047c461;
 }
+
+.flag-textarea {
+  width: 80%;
+  height: 20vh;
+  border-radius: 10px;
+  margin: 15px auto 0;
+  box-shadow: 0 0 5px #ccc;
+  padding: 10px;
+}

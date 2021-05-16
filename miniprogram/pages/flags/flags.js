@@ -44,7 +44,9 @@ Page({
     todayString: '',
     choosed: null,
     currentData: currentData,
-    showOpotion: false
+    showOpotion: false,
+    doneList: {},
+    textareaText: ''
   },
 
   /**
@@ -153,7 +155,6 @@ Page({
               key: 'flagList',
               data: res.data,
             })
-            console.log('hhhhhhasdgddddddd:', res);
             _this.showWeekData(res.data.length);
             wx.hideLoading();
           }
@@ -236,31 +237,32 @@ Page({
       const todayDate = db_util.getLocalTime(new Date().getTime(), 'date');
       const todayTime = db_util.getLocalTime(new Date().getTime(), 'time');
       if(!e.currentTarget.dataset.done) {
-        flags.doc(id).update({
-          data: {
-            done: true,
-            times: _.inc(1),
-            flagTime: _.push({
-              each: [{
-                date: todayDate,
-                time: todayTime
-              }],
-              position: 0
-            })
-          }
-        }).then(res => {
-          flags.doc(id).get({
-            success: function (res) {
-              _this.setData({
-                currentList: res.data,
-                showDone: true
-              })
-              _this.onShow();
-            }
-          });
-        }).catch(err => {
-          console.log('error', err);
-        });                                                                    
+        this.showDoneToast(e.currentTarget.dataset);
+        // flags.doc(id).update({
+        //   data: {
+        //     done: true,
+        //     times: _.inc(1),
+        //     flagTime: _.push({
+        //       each: [{
+        //         date: todayDate,
+        //         time: todayTime
+        //       }],
+        //       position: 0
+        //     })
+        //   }
+        // }).then(res => {
+        //   flags.doc(id).get({
+        //     success: function (res) {
+        //       _this.setData({
+        //         currentList: res.data,
+        //         showDone: true
+        //       })
+        //       _this.onShow();
+        //     }
+        //   });
+        // }).catch(err => {
+        //   console.log('error', err);
+        // });                                                                    
       } else {
         flags.doc(id).get({
           success: function (res) {
@@ -272,6 +274,60 @@ Page({
         });
       }
     }
+  },
+  showFlagDetail: function () {
+    
+  },
+  showDoneToast: function (list) {
+    let temp = {
+      name: list.name,
+      type: list.type,
+      id: list.id
+    };
+    this.setData({
+      doneList: temp,
+      showDone: true
+    });
+  },
+  bindInput: function (e) {
+    this.setData({
+      textareaText: e.detail.value
+    })
+  },
+  addFlagToDatabase: function (e) {
+    const text = this.data.textareaText;
+    const id = e.currentTarget.dataset.id;
+    const flags = wx.cloud.database().collection('flags');
+    const _this = this;
+    const _ = wx.cloud.database().command
+    const todayDate = db_util.getLocalTime(new Date().getTime(), 'date');
+    const todayTime = db_util.getLocalTime(new Date().getTime(), 'time');
+    flags.doc(id).update({
+      data: {
+        done: true,
+        times: _.inc(1),
+        flagDetail: text,
+        flagTime: _.push({
+          each: [{
+            date: todayDate,
+            time: todayTime
+          }],
+          position: 0
+        })
+      }
+    }).then(res => {
+      flags.doc(id).get({
+        success: function (res) {
+           _this.setData({
+            currentList: res.data,
+            showDone: false
+          })
+          _this.onShow();
+        }
+      });
+    }).catch(err => {
+        console.log('error', err);
+      });  
   },
   closeDone: function (e) {
     if(e.currentTarget.dataset.type == 'detail') {

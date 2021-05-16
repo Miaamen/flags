@@ -15,7 +15,7 @@
         <text class="title">{{item.name}}</text>
         <text class="times">每日一次</text>
       </view>
-      <view class="done" catchtap="doneFlag" data-id="{{item._id}}" data-done="{{item.done}}">
+      <view class="done" catchtap="doneFlag" data-id="{{item._id}}" data-done="{{item.done}}" data-type="{{item.type}}" data-name="{{item.name}}">
         <image class="done-icon" src="{{item.done ? '../../images/Heart.png' : '../../images/addHeart.png'}}"></image>
         <text class="done-text">{{item.done ? '已完成flag' : '去完成flag'}}</text>
       </view>
@@ -38,14 +38,11 @@
 <view wx:if="{{showDone}}" class="show-done-card">
   <view class="show-done">
     <view class="title-view">
-      <image src="../../images/{{currentList.type}}.png"></image>
-      <text>{{currentList.name}}</text>
-      <text class="detail" bindtap="showDetail" data-id="currentList._id">详情 > </text>
+      <image src="../../images/{{doneList.type}}.png"></image>
+      <text>{{doneList.name}}</text>
     </view>
-    <image class="finish-icon" src="../../images/finish.png"></image>
-    <text class="finish-title">Flag成功</text>
-    <text class="finish-times">已累计完成{{currentList.times}}次</text>
-    <view class="finish-close" bindtap="closeDone">关闭</view>
+    <textarea class="flag-textarea" placeholder="填入打卡心情吧~" value="{{textareaText}}" bindinput="bindInput" placeholder-style="font-size: 12px;"></textarea>
+    <view class="finish-close" bindtap="closeDone" bindtap="addFlagToDatabase" data-id="{{doneList.id}}">打卡</view>
   </view>
 </view>
 
